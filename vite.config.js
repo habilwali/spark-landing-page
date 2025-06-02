@@ -6,7 +6,4 @@ export default defineConfig({
     css: {
         postcss: './postcss.config.cjs',
     },
-    preview: {
-        allowedHosts: ['.ngrok-free.app', 'localhost']
-    },
 });

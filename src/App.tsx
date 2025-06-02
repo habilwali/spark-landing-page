@@ -6,7 +6,6 @@ import TechAnimations from './components/TechAnimations'
 import FloatingIcons from './components/FloatingIcons'
 import WaveBackground from './components/WaveBackground'
 import PageLoader from './components/PageLoader'
-import Calendar from './components/Calendar'
 import TechServices from './components/TechServices'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import GradientBackground from './components/GradientBackground'
@@ -127,118 +126,9 @@ function HomePage() {
         <AIAnimations />
         <FloatingIcons />
         
-        {/* Header with hover previews */}
-        <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-primary/20">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex items-center"
-              >
-                <div className="relative group">
-                  <img src={logo} alt="SparkAI Logo" className="h-10 w-auto relative z-10" />
-                  <motion.div
-                    className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-full opacity-75 blur-sm group-hover:opacity-100"
-                    initial={{ scale: 0.95 }}
-                    animate={{ scale: [0.95, 1.05, 0.95] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-                <div className="ml-2">
-                  <span className="text-xl font-semibold text-white">
-                    Spark<span className="text-primary">AI</span>
-                  </span>
-                  <motion.div
-                    className="h-0.5 bg-gradient-to-r from-primary to-blue-600"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  />
-                </div>
-              </motion.div>
+        <Header />
 
-              <nav className="hidden md:flex items-center space-x-8">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="relative group"
-                  >
-                    {item.href.startsWith('/') ? (
-                      <Link 
-                        to={item.href}
-                        className="text-white hover:text-primary transition-colors duration-200"
-                      >
-                        {item.name}
-                      </Link>
-                    ) : (
-                      <a 
-                        href={item.href}
-                        className="text-white hover:text-primary transition-colors duration-200"
-                      >
-                        {item.name}
-                      </a>
-                    )}
-                    <motion.div
-                      className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-blue-600"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                    <motion.div
-                      className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-48 bg-black/90 rounded-lg opacity-0 scale-95 pointer-events-none z-50 group-hover:opacity-100 group-hover:scale-100"
-                      initial={{ opacity: 0, y: -5, scale: 0.95 }}
-                      animate={{ opacity: 0, y: -5, scale: 0.95 }}
-                      whileHover={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="relative">
-                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 rotate-45" />
-                        <div className="px-4 py-2 text-sm text-primary/90 relative z-10">
-                          {item.preview}
-                        </div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ))}
-                
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                  className="relative group"
-                >
-                  <motion.a
-                    href="#book-call"
-                    className="relative inline-flex group"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <motion.div
-                      className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"
-                      animate={{
-                        opacity: [0.5, 0.8, 0.5]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity
-                      }}
-                    />
-                    <span className="relative px-6 py-2 bg-black rounded-lg text-white border border-primary/50 group-hover:border-primary transition-colors duration-200">
-                      Book Call
-                    </span>
-                  </motion.a>
-                </motion.div>
-              </nav>
-            </div>
-          </div>
-        </header>
-
-        {/* Enhanced Hero Section with Video Background */}
+        {/* Enhanced Hero Section */}
         <div className="relative min-h-screen flex flex-col items-center justify-start pt-32 pb-16 overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0 -z-10">
@@ -261,14 +151,14 @@ function HomePage() {
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                 }}
-                animate={{
+                  animate={{
                   x: [0, Math.random() * 40 - 20],
                   y: [0, Math.random() * 40 - 20],
                   opacity: [0.7, 1, 0.7],
-                }}
-                transition={{
+                  }}
+                  transition={{
                   duration: 10 + Math.random() * 10,
-                  repeat: Infinity,
+                    repeat: Infinity,
                   repeatType: 'reverse',
                   ease: 'easeInOut',
                 }}
@@ -291,13 +181,13 @@ function HomePage() {
             {/* Optional: faint mesh SVG for extra depth */}
             <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] opacity-10" viewBox="0 0 900 500" fill="none">
               <ellipse cx="450" cy="250" rx="400" ry="180" fill="url(#meshGradient)" />
-              <defs>
+                <defs>
                 <radialGradient id="meshGradient" cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5" gradientTransform="matrix(1 0 0 0.5 0 0.25)">
                   <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.3" />
                   <stop offset="100%" stopColor="#6366f1" stopOpacity="0.1" />
                 </radialGradient>
-              </defs>
-            </svg>
+                </defs>
+              </svg>
           </div>
 
           {/* Content Overlay - Moved to top */}
@@ -715,133 +605,166 @@ function HomePage() {
           </div>
         </motion.section>
 
-        {/* Calendly Section (Book Your Free AI Audit) */}
+        {/* Services Section */}
         <motion.section
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
-          className="relative py-24 bg-gradient-to-b from-gray-50 to-white"
-          id="book-call"
+          className="relative py-24 bg-gradient-to-b from-white to-gray-50"
         >
-          {/* Background Effects */}
+          <div className="container mx-auto px-4">
+            <motion.div
+              variants={fadeInUp}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                AI Services That{' '}
+                <span className="text-primary relative inline-block">
+                  Transform
+                  <motion.span
+                    className="absolute -inset-2 bg-primary/20 blur-lg rounded-lg -z-10"
+                    animate={{
+                      opacity: [0.5, 1, 0.5],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </span>
+                {' '}Your Business
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Explore our interactive tech demos and see how AI can revolutionize your operations
+              </p>
+            </motion.div>
+
+            <TechServices />
+          </div>
+        </motion.section>
+
+        {/* AI Quote Section - Redesigned */}
+        <motion.section
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="relative py-16 bg-gradient-to-r from-gray-50 via-white to-gray-50"
+        >
+          {/* Subtle animated background */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-blue-600/5" />
-            {Array.from({ length: 3 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"
-                style={{
-                  top: `${30 * i}%`,
-                  left: '-100%',
-                  right: '-100%'
-                }}
-                animate={{
-                  x: ['0%', '100%']
-                }}
-                transition={{
-                  duration: 10 + i * 2,
-                  repeat: Infinity,
-                  ease: 'linear'
-                }}
-              />
-            ))}
+            <motion.div
+              className="absolute inset-0 opacity-10"
+              animate={{
+                background: [
+                  "radial-gradient(circle at 0% 0%, transparent 0%, transparent 100%)",
+                  "radial-gradient(circle at 100% 100%, rgba(167, 139, 250, 0.1) 0%, transparent 100%)"
+                ]
+              }}
+              transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
+            />
           </div>
 
-          <div className="relative z-10 container mx-auto px-4">
-            {/* Section Header - Now on the left */}
-            <div className="grid md:grid-cols-2 gap-12 items-start max-w-7xl mx-auto">
-              <div className="space-y-8">
-                <motion.div
-                  variants={fadeInUp}
-                  className="text-left"
-                >
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                    Book Your{' '}
-                    <span className="text-primary relative inline-block">
-                      Free AI Audit
-                      <motion.span
-                        className="absolute -inset-2 bg-primary/20 blur-lg rounded-lg"
-                        animate={{
-                          opacity: [0.5, 1, 0.5],
-                          scale: [1, 1.1, 1]
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                    </span>
-                  </h2>
-                  <motion.p
-                    variants={fadeInUp}
-                    className="text-xl text-gray-600 max-w-xl"
+          <div className="relative container mx-auto px-4">
+            <motion.div
+              variants={{
+                initial: { opacity: 0 },
+                animate: { opacity: 1 }
+              }}
+              className="max-w-4xl mx-auto"
+            >
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                {/* Quote Content */}
+                <div className="flex-1">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="relative"
                   >
-                    Struggling with manual processes? In just 30 minutes, discover how AI can save your team 60+ hours every month
-                  </motion.p>
-
-                  {/* Booking Flow Steps */}
-                  <div className="mt-12 space-y-6">
-                    {[
-                      {
-                        step: 1,
-                        icon: "🔍",
-                        title: "Process Analysis",
-                        description: "We'll analyze your current workflows and identify automation opportunities"
-                      },
-                      {
-                        step: 2,
-                        icon: "⚡",
-                        title: "AI Solutions",
-                        description: "Get tailored AI recommendations for your specific business needs"
-                      },
-                      {
-                        step: 3,
-                        icon: "📊",
-                        title: "Action Plan",
-                        description: "Receive a clear roadmap with estimated time and cost savings"
-                      }
-                    ].map((step, index) => (
-                      <motion.div
-                        key={index}
-                        variants={{
-                          initial: { opacity: 0, x: -20 },
-                          animate: { opacity: 1, x: 0 }
-                        }}
-                        transition={{ delay: index * 0.2 }}
-                        className="flex items-start space-x-4 bg-white/50 backdrop-blur-sm p-4 rounded-xl border border-primary/10 hover:border-primary/30 transition-colors duration-200"
+                    <motion.span
+                      className="absolute -left-6 -top-4 text-6xl text-primary/20"
+                      animate={{ opacity: [0.2, 0.3, 0.2] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      "
+                    </motion.span>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                      Artificial Intelligence is about{' '}
+                      <span className="relative inline-block">
+                        <motion.span
+                          className="relative z-10 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
+                          animate={{ opacity: [0.9, 1, 0.9] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        >
+                          amplifying human potential
+                        </motion.span>
+                        <motion.span
+                          className="absolute -inset-1 bg-primary/10 blur-lg rounded-lg -z-10"
+                          animate={{ opacity: [0.3, 0.6, 0.3] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        />
+                      </span>
+                    </h2>
+                    <div className="space-y-2 text-lg text-gray-600">
+                      <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="flex items-center gap-2"
                       >
-                        <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                          <span className="text-2xl">{step.icon}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
-                          <p className="text-gray-600">{step.description}</p>
-                        </div>
-                      </motion.div>
-                    ))}
+                        <span className="text-primary">→</span>
+                        Transforming complex workflows into seamless experiences
+                      </motion.p>
+                      <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="text-primary">→</span>
+                        Turning time-consuming tasks into moments of innovation
+                      </motion.p>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Profile Section */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="flex items-center md:items-start gap-4 bg-white/50 backdrop-blur-sm p-4 rounded-xl border border-primary/10"
+                >
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20">
+                      <img
+                        src={logo}
+                        alt="Sarah Anderson"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <motion.div
+                      className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-600/20 rounded-full blur"
+                      animate={{ opacity: [0.5, 0.8, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900">Sarah Anderson</div>
+                    <div className="text-primary text-sm">CEO, SparkAI</div>
                   </div>
                 </motion.div>
               </div>
-
-              {/* Calendar Container - Now smaller and on the right */}
-              <motion.div
-                variants={scaleIn}
-                className="w-full max-w-lg mx-auto"
-              >
-                <Calendar />
-              </motion.div>
-            </div>
-
-            {/* Booking Confirmation Preview */}
-            {/* Removed Custom Automation Report, ROI Breakdown, Implementation Roadmap */}
-            
-            {/* Benefits Grid */}
-            {/* Removed Expert AI Strategy, Smart Automation, Proven ROI */}
-            {/* ... existing code ... */}
+            </motion.div>
           </div>
         </motion.section>
-        {/* Move Client Success Stories section here, immediately after Book Your Free AI Audit */}
+
+        {/* Client Success Stories section */}
         <motion.div
           initial="initial"
           whileInView="animate"
@@ -969,221 +892,51 @@ function HomePage() {
           </div>
         </motion.div>
 
-        {/* AI Quote Section */}
-        <motion.section
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          className="relative py-24 bg-gradient-to-b from-white to-gray-50"
-        >
-          {/* Animated background elements */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-blue-600/5" />
-            {Array.from({ length: 5 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"
-                style={{
-                  top: `${20 * i}%`,
-                  left: '-100%',
-                  right: '-100%'
-                }}
-                animate={{
-                  x: ['0%', '100%']
-                }}
-                transition={{
-                  duration: 8 + i * 2,
-                  repeat: Infinity,
-                  ease: 'linear'
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="relative container mx-auto px-4">
-            <motion.div
-              variants={{
-                initial: { opacity: 0, y: 20 },
-                animate: { opacity: 1, y: 0 }
-              }}
-              className="max-w-4xl mx-auto text-center"
-            >
-              <motion.div
-                className="text-7xl text-primary/20 mb-4"
-                animate={{
-                  opacity: [0.2, 0.3, 0.2],
-                  scale: [1, 1.02, 1]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                "
-              </motion.div>
-              <motion.blockquote
-                className="text-center max-w-5xl mx-auto"
-                variants={{
-                  initial: { opacity: 0, y: 20 },
-                  animate: { opacity: 1, y: 0 }
-                }}
-              >
-                <div className="mb-10 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                  <span className="text-gray-800">Artificial Intelligence is about</span>{' '}
-                  <div className="mt-2">
-                    <span className="relative inline-block">
-                      <motion.span
-                        className="relative z-10 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
-                        animate={{
-                          opacity: [0.9, 1, 0.9]
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      >
-                        amplifying human potential
-                      </motion.span>
-                      <motion.span
-                        className="absolute -inset-2 bg-primary/10 blur-xl rounded-lg -z-10"
-                        animate={{
-                          opacity: [0.3, 0.6, 0.3],
-                          scale: [1, 1.05, 1]
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                    </span>
-                  </div>
-                </div>
-                <motion.div 
-                  className="space-y-4 text-xl md:text-2xl font-medium text-gray-600/90"
-                  variants={{
-                    initial: { opacity: 0, y: 20 },
-                    animate: { opacity: 1, y: 0 }
-                  }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <motion.p
-                    whileHover={{ scale: 1.02 }}
-                    className="relative inline-block px-6 py-2"
-                  >
-                    <span className="relative z-10">Transforming complex workflows into seamless experiences</span>
-                    <motion.span
-                      className="absolute inset-0 bg-primary/5 rounded-lg -z-10"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileHover={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  </motion.p>
-                  <motion.p
-                    whileHover={{ scale: 1.02 }}
-                    className="relative inline-block px-6 py-2"
-                  >
-                    <span className="relative z-10">Turning time-consuming tasks into moments of innovation</span>
-                    <motion.span
-                      className="absolute inset-0 bg-primary/5 rounded-lg -z-10"
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileHover={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  </motion.p>
-                </motion.div>
-              </motion.blockquote>
-              <motion.div
-                variants={{
-                  initial: { opacity: 0 },
-                  animate: { opacity: 1 }
-                }}
-                transition={{ delay: 0.3 }}
-                className="flex items-center justify-center space-x-4"
-              >
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary">
-                  <img
-                    src={logo}
-                    alt="SparkAI CEO"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="text-left">
-                  <div className="font-semibold text-gray-900">Sarah Anderson</div>
-                  <div className="text-primary">CEO, SparkAI</div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.section>
-
-        {/* Services Section */}
-        <motion.section
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          className="relative py-24 bg-gradient-to-b from-white to-gray-50"
-        >
-          <div className="container mx-auto px-4">
-            <motion.div
-              variants={fadeInUp}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                AI Services That{' '}
-                <span className="text-primary relative inline-block">
-                  Transform
-                  <motion.span
-                    className="absolute -inset-2 bg-primary/20 blur-lg rounded-lg -z-10"
-                    animate={{
-                      opacity: [0.5, 1, 0.5],
-                      scale: [1, 1.1, 1]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
-                </span>
-                {' '}Your Business
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Explore our interactive tech demos and see how AI can revolutionize your operations
-              </p>
-            </motion.div>
-
-            <TechServices />
-          </div>
-        </motion.section>
-
         {/* CTA Button above Footer */}
         <div className="w-full flex justify-center py-12 bg-gradient-to-b from-gray-50 to-white">
-          <motion.a
-            href="#book-call"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-10 py-5 text-2xl font-bold text-white bg-primary rounded-xl shadow-xl hover:bg-primary-dark transition-colors duration-300 group"
-          >
-            <span>Book Your Free AI Audit</span>
-            <motion.svg
-              className="w-6 h-6 ml-3 transform group-hover:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          <div className="bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl px-10 py-8 flex flex-col items-center max-w-xl relative overflow-hidden">
+            {/* Animated background gradient */}
+            <motion.div
+              className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-primary/20 via-blue-400/20 to-purple-400/20 blur-2xl opacity-60 -z-10"
+              animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.05, 1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            {/* Floating tech elements */}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-primary/20 rounded-full blur"
+                style={{ left: `${10 + i * 10}%`, top: `${10 + (i % 4) * 20}%` }}
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            ))}
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 text-center z-10">Ready to Build Your AI Workforce?</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8 text-center z-10">Request a demo or book a strategy call to see agentic AI in action for your business.</p>
+            <motion.a
+              href="#book-call"
+              whileHover={{ scale: 1.07, boxShadow: '0 0 24px 6px #a78bfa55' }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center px-10 py-5 text-2xl font-bold text-white bg-gradient-to-r from-primary to-blue-500 rounded-xl shadow-xl hover:from-blue-500 hover:to-primary transition-colors duration-300 group z-10"
+              style={{ boxShadow: '0 0 16px 2px #a78bfa33' }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </motion.svg>
-          </motion.a>
-        </div>
+              <span>Request Demo</span>
+              <motion.svg
+                className="w-6 h-6 ml-3 transform group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </motion.svg>
+            </motion.a>
+          </div>
+          </div>
 
-        {/* Footer */}
         <Footer />
       </motion.div>
     </>
-  )
+  );
 }
 
 function Header() {
@@ -1191,7 +944,7 @@ function Header() {
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-primary/20">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <motion.div 
+                <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -1209,7 +962,7 @@ function Header() {
             <div className="ml-2">
               <span className="text-xl font-semibold text-white">
                 Spark<span className="text-primary">AI</span>
-              </span>
+                    </span>
               <motion.div
                 className="h-0.5 bg-gradient-to-r from-primary to-blue-600"
                 initial={{ scaleX: 0 }}
@@ -1242,7 +995,7 @@ function Header() {
                     {item.name}
                   </a>
                 )}
-                <motion.div
+                      <motion.div
                   className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-blue-600"
                   initial={{ scaleX: 0 }}
                   whileHover={{ scaleX: 1 }}
@@ -1259,12 +1012,13 @@ function Header() {
                     <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-black/90 rotate-45" />
                     <div className="px-4 py-2 text-sm text-primary/90 relative z-10">
                       {item.preview}
-                    </div>
-                  </div>
+                        </div>
+                        </div>
+                      </motion.div>
                 </motion.div>
-              </motion.div>
             ))}
-            <motion.div
+
+              <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -1276,12 +1030,12 @@ function Header() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <motion.div
+              <motion.div
                   className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200"
-                  animate={{
+                animate={{
                     opacity: [0.5, 0.8, 0.5]
-                  }}
-                  transition={{
+                }}
+                transition={{
                     duration: 2,
                     repeat: Infinity
                   }}
@@ -1292,7 +1046,7 @@ function Header() {
               </motion.a>
             </motion.div>
           </nav>
-        </div>
+          </div>
       </div>
     </header>
   );
@@ -1300,50 +1054,147 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="bg-black text-white py-12 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-black to-gray-900/90 pointer-events-none" />
+    <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 relative">
+      {/* Animated gradient overlay */}
+            <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-primary/5 via-blue-500/5 to-purple-500/5"
+                animate={{
+          backgroundPosition: ['0% 0%', '100% 100%'],
+                }}
+                transition={{
+          duration: 10,
+                  repeat: Infinity,
+          repeatType: 'reverse',
+        }}
+      />
+      
+      {/* Main footer content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <span className="text-2xl font-semibold">
-              Spark<span className="text-primary">AI</span>
-              <span className="text-gray-400"> | AI Strategy & Automation Experts</span>
-            </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <span className="text-3xl font-bold">
+                Spark<span className="text-primary">AI</span>
+                    </span>
+                  </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Empowering businesses with intelligent automation solutions. Transform your operations with enterprise-grade AI technology.
+            </p>
+            <div className="flex space-x-4">
+              {/* Social Media Links */}
+              {[
+                { icon: "linkedin", href: "#" },
+                { icon: "twitter", href: "#" },
+                { icon: "github", href: "#" },
+              ].map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary/20 transition-colors duration-300"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <span className="text-primary">{social.icon === 'linkedin' ? '🔗' : social.icon === 'twitter' ? '🐦' : '💻'}</span>
+                </motion.a>
+              ))}
+                </div>
           </div>
-          <div className="flex items-center justify-center space-x-6">
-            <motion.span 
-              className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center"
-              whileHover={{ scale: 1.05 }}
-            >
-              📧 <span className="ml-2">contact@sparkai.co</span>
-            </motion.span>
-            <span className="text-primary">|</span>
-            <motion.span 
-              className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center"
-              whileHover={{ scale: 1.05 }}
-            >
-              📍 <span className="ml-2">Dubai, UAE</span>
-            </motion.span>
+
+          {/* Solutions */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Solutions</h3>
+            <ul className="space-y-3">
+              {[
+                'AI Automation',
+                'Process Optimization',
+                'Workflow Design',
+                'Integration Services',
+                'Custom Development'
+              ].map((item, index) => (
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  className="text-gray-400 hover:text-primary transition-colors duration-300"
+                >
+                  <a href="#" className="block">{item}</a>
+                </motion.li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="border-t border-gray-800 pt-8 text-center">
-          <p className="text-gray-400">© 2025 SparkAI. All rights reserved.</p>
-          <div className="flex justify-center space-x-6 mt-4">
-            <motion.a 
-              href="#" 
-              className="text-gray-400 hover:text-primary transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              Privacy Policy
-            </motion.a>
-            <span className="text-gray-600">•</span>
-            <motion.a 
-              href="#" 
-              className="text-gray-400 hover:text-primary transition-colors duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              Terms of Service
-            </motion.a>
+
+          {/* Company */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Company</h3>
+            <ul className="space-y-3">
+              {[
+                'About Us',
+                'Careers',
+                'Case Studies',
+                'Blog',
+                'Contact'
+              ].map((item, index) => (
+                <motion.li
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  className="text-gray-400 hover:text-primary transition-colors duration-300"
+                >
+                  <a href="#" className="block">{item}</a>
+                </motion.li>
+              ))}
+            </ul>
+                </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-lg font-semibold mb-6 text-white">Contact Us</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3 text-gray-400">
+                <span className="text-primary mt-1">📍</span>
+                <span>
+                  Dubai Internet City<br />
+                  Dubai, UAE
+                </span>
+              </li>
+              <li className="flex items-center space-x-3 text-gray-400">
+                <span className="text-primary">📧</span>
+                <a href="mailto:contact@sparkai.co" className="hover:text-primary transition-colors duration-300">
+                  contact@sparkai.co
+                </a>
+              </li>
+              <li className="flex items-center space-x-3 text-gray-400">
+                <span className="text-primary">📱</span>
+                <a href="tel:+971500000000" className="hover:text-primary transition-colors duration-300">
+                  +971 50 000 0000
+                </a>
+              </li>
+            </ul>
+                </div>
+          </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-gray-400 text-sm">
+              © 2025 SparkAI. All rights reserved.
+            </div>
+            <div className="flex space-x-6">
+              {[
+                'Privacy Policy',
+                'Terms of Service',
+                'Cookie Policy',
+                'Sitemap'
+              ].map((item, index) => (
+                <motion.a
+                  key={index}
+                  href="#"
+                  className="text-gray-400 hover:text-primary text-sm transition-colors duration-300"
+                  whileHover={{ y: -2 }}
+                >
+                  {item}
+                </motion.a>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1391,8 +1242,70 @@ function ServicesPage() {
     <svg className="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 32 32"><rect x="8" y="10" width="16" height="12" rx="3" stroke="currentColor" strokeWidth="2" fill="#e0e7ff"/><path d="M16 10v12" stroke="#6366f1" strokeWidth="2"/></svg>,
     <svg className="w-8 h-8 text-gray-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6"/><path d="M12 20h8" stroke="#6b7280" strokeWidth="2"/></svg>
   ];
+
+  // Industry images
+  const industryImages = {
+    healthcare: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80",
+    professional: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80",
+    ecommerce: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80",
+    realestate: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80",
+    finance: "https://images.unsplash.com/photo-1551260627-fd1b6daa6224?auto=format&fit=crop&q=80",
+    logistics: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
+    education: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80",
+    manufacturing: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80"
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-purple-50 to-purple-100 flex flex-col relative overflow-hidden">
+      {/* Animated Background Image */}
+      <motion.div 
+        className="absolute inset-0 w-full h-full -z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <motion.img
+          src="/src/assets/purple-wave-bg.png"
+          alt="Purple Wave Background"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          initial={{ scale: 1 }}
+          animate={{ 
+            scale: [1, 1.05, 1],
+            rotate: [0, 1, 0]
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "easeInOut"
+          }}
+        />
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80" />
+      </motion.div>
+
+      {/* Floating particles */}
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-purple-500/20 rounded-full blur-sm"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, Math.random() * 100 - 50],
+            x: [0, Math.random() * 100 - 50],
+            opacity: [0.2, 0.5, 0.2]
+          }}
+          transition={{
+            duration: 10 + Math.random() * 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+
       <GradientBackground />
       <Header />
       <main className="flex-1 w-full relative z-10">
@@ -1412,21 +1325,21 @@ function ServicesPage() {
             />
             {/* Animated floating tech elements */}
             {Array.from({ length: 24 }).map((_, i) => (
-              <motion.div
+            <motion.div
                 key={i}
                 className="absolute w-3 h-3 bg-primary/10 rounded-full blur-md"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                 }}
-                animate={{
+                    animate={{
                   x: [0, Math.random() * 40 - 20],
                   y: [0, Math.random() * 40 - 20],
                   opacity: [0.7, 1, 0.7],
-                }}
-                transition={{
+                    }}
+                    transition={{
                   duration: 10 + Math.random() * 10,
-                  repeat: Infinity,
+                      repeat: Infinity,
                   repeatType: 'reverse',
                   ease: 'easeInOut',
                 }}
@@ -1516,7 +1429,7 @@ function ServicesPage() {
             {/* Floating tech icons */}
             <div className="absolute inset-0 z-10 pointer-events-none">
               <FloatingIcons />
-            </div>
+        </div>
             {/* Glassy card with animated gradient border */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -1590,7 +1503,7 @@ function ServicesPage() {
                 ))}
               </ul>
             </motion.div>
-          </div>
+              </div>
         </section>
         {/* --- SERVICES GRID --- */}
         <section className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 lg:grid-cols-3 gap-10 relative">
@@ -1622,14 +1535,14 @@ function ServicesPage() {
                 <div className="flex items-center justify-center mb-4 z-10 relative">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-br from-white/80 to-primary/10 shadow-lg border border-primary/10 animate-pulse-slow">
                     {step.icon}
-                  </div>
+          </div>
                 </div>
                 <h3 className="text-lg font-bold text-primary mb-2 z-10 relative">{step.title}</h3>
                 <p className="text-gray-600 text-base z-10 relative">{step.desc}</p>
-              </motion.div>
+      </motion.div>
             ))}
           </div>
-        </section>
+      </section>
         {/* --- WHY CHOOSE AGENTIC AI (TECH-SAVVY GLASSY CARDS) --- */}
         <section className="relative py-20 bg-gradient-to-b from-white via-purple-50 to-purple-100 overflow-hidden">
           {/* Floating tech particles */}
@@ -1700,14 +1613,14 @@ function ServicesPage() {
                 <div className="flex items-center justify-center mb-4 z-10 relative">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/90 shadow-lg border-2 border-white">
                     {benefit.icon}
-                  </div>
-                </div>
+              </div>
+            </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 z-10 relative tracking-wide drop-shadow-lg">{benefit.title}</h3>
                 <p className="text-gray-700 text-base z-10 relative font-medium drop-shadow">{benefit.desc}</p>
               </motion.div>
             ))}
-          </div>
-        </section>
+            </div>
+      </section>
         {/* --- INDUSTRIES WE SERVE (HORIZONTAL SCROLLABLE CARDS) --- */}
         <section className="relative max-w-7xl mx-auto px-4 py-16 overflow-hidden">
           {/* Background image with overlay */}
@@ -1719,18 +1632,66 @@ function ServicesPage() {
           </h2>
           <div className="flex gap-8 overflow-x-auto pb-4 snap-x relative z-10">
             {[
-              { icon: industryIcons[0], name: 'Healthcare', desc: 'Patient onboarding, lab data, compliance.', color: 'from-white/80 via-blue-100/60 to-blue-200/80 border-blue-200' },
-              { icon: industryIcons[1], name: 'Professional Services', desc: 'Workflow automation, onboarding, reporting.', color: 'from-white/80 via-purple-100/60 to-purple-200/80 border-purple-200' },
-              { icon: industryIcons[2], name: 'E-commerce', desc: 'Order automation, chatbots, marketing.', color: 'from-white/80 via-pink-100/60 to-pink-200/80 border-pink-200' },
-              { icon: industryIcons[3], name: 'Real Estate', desc: 'Lead management, document automation.', color: 'from-white/80 via-yellow-100/60 to-yellow-200/80 border-yellow-200' },
-              { icon: industryIcons[4], name: 'Finance', desc: 'KYC, fraud detection, reporting.', color: 'from-white/80 via-green-100/60 to-green-200/80 border-green-200' },
-              { icon: industryIcons[5], name: 'Logistics', desc: 'Route optimization, tracking, inventory.', color: 'from-white/80 via-indigo-100/60 to-indigo-200/80 border-indigo-200' },
-              { icon: industryIcons[6], name: 'Education', desc: 'Admissions, grading, engagement.', color: 'from-white/80 via-purple-100/60 to-indigo-200/80 border-purple-200' },
-              { icon: industryIcons[7], name: 'Manufacturing', desc: 'Supply chain, quality control.', color: 'from-white/80 via-gray-100/60 to-gray-200/80 border-gray-200' },
-            ].map((industry, i) => (
+              { 
+                icon: industryIcons[0], 
+                name: 'Healthcare', 
+                desc: 'Patient onboarding, lab data, compliance.', 
+                color: 'from-white/80 via-blue-100/60 to-blue-200/80 border-blue-200',
+                image: industryImages.healthcare
+              },
+              { 
+                icon: industryIcons[1], 
+                name: 'Professional Services', 
+                desc: 'Workflow automation, onboarding, reporting.', 
+                color: 'from-white/80 via-purple-100/60 to-purple-200/80 border-purple-200',
+                image: industryImages.professional
+              },
+              { 
+                icon: industryIcons[2], 
+                name: 'E-commerce', 
+                desc: 'Order automation, chatbots, marketing.', 
+                color: 'from-white/80 via-pink-100/60 to-pink-200/80 border-pink-200',
+                image: industryImages.ecommerce
+              },
+              { 
+                icon: industryIcons[3], 
+                name: 'Real Estate', 
+                desc: 'Lead management, document automation.', 
+                color: 'from-white/80 via-yellow-100/60 to-yellow-200/80 border-yellow-200',
+                image: industryImages.realestate
+              },
+              { 
+                icon: industryIcons[4], 
+                name: 'Finance', 
+                desc: 'KYC, fraud detection, reporting.', 
+                color: 'from-white/80 via-green-100/60 to-green-200/80 border-green-200',
+                image: industryImages.finance
+              },
+              { 
+                icon: industryIcons[5], 
+                name: 'Logistics', 
+                desc: 'Route optimization, tracking, inventory.', 
+                color: 'from-white/80 via-indigo-100/60 to-indigo-200/80 border-indigo-200',
+                image: industryImages.logistics
+              },
+              { 
+                icon: industryIcons[6], 
+                name: 'Education', 
+                desc: 'Admissions, grading, engagement.', 
+                color: 'from-white/80 via-purple-100/60 to-indigo-200/80 border-purple-200',
+                image: industryImages.education
+              },
+              { 
+                icon: industryIcons[7], 
+                name: 'Manufacturing', 
+                desc: 'Supply chain, quality control.', 
+                color: 'from-white/80 via-gray-100/60 to-gray-200/80 border-gray-200',
+                image: industryImages.manufacturing
+              },
+          ].map((industry, i) => (
               <motion.div
                 key={i}
-                className={`relative group bg-gradient-to-br ${industry.color} backdrop-blur-xl rounded-2xl p-6 border-2 shadow-xl flex flex-col items-center text-center overflow-hidden min-w-[220px] max-w-xs snap-center`}
+                className={`relative group bg-gradient-to-br ${industry.color} backdrop-blur-xl rounded-2xl p-6 border-2 shadow-xl flex flex-col items-center text-center overflow-hidden min-w-[280px] max-w-xs snap-center`}
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -1740,16 +1701,35 @@ function ServicesPage() {
                   scale: 1.06
                 }}
               >
-                <div className="flex items-center justify-center mb-3 z-10 relative">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center bg-white/90 shadow-lg border-2 border-white">
-                    {industry.icon}
-                  </div>
+                {/* Background Image */}
+                <div className="absolute inset-0 w-full h-full">
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/95 backdrop-blur-sm" />
+                  <img
+                    src={industry.image}
+                    alt={industry.name}
+                    className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-300"
+                  />
+            </div>
+
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center mb-3">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center bg-white/90 shadow-lg border-2 border-white">
+                      {industry.icon}
+            </div>
+        </div>
+                  <span className="text-lg font-bold text-gray-900 mb-1 block drop-shadow-lg">{industry.name}</span>
+                  <span className="text-gray-700 text-sm block font-medium drop-shadow">{industry.desc}</span>
                 </div>
-                <span className="text-lg font-bold text-gray-900 mb-1 z-10 relative drop-shadow-lg">{industry.name}</span>
-                <span className="text-gray-700 text-sm z-10 relative font-medium drop-shadow">{industry.desc}</span>
+
+                {/* Hover overlay */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                />
               </motion.div>
             ))}
-          </div>
+            </div>
         </section>
         {/* --- MODERN CTA --- */}
         <section className="w-full py-16 flex justify-center items-center bg-gradient-to-r from-primary/10 via-primary/10 to-blue-600/10 mt-8 border-t border-primary/10">
@@ -1789,8 +1769,8 @@ function ServicesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </motion.svg>
             </motion.a>
-          </div>
-        </section>
+        </div>
+      </section>
       </main>
       <Footer />
     </div>
