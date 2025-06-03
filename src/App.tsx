@@ -7,6 +7,7 @@ import FloatingIcons from './components/FloatingIcons'
 import WaveBackground from './components/WaveBackground'
 import PageLoader from './components/PageLoader'
 import TechServices from './components/TechServices'
+import BookingCalendar from './components/BookingCalendar'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import GradientBackground from './components/GradientBackground'
 
@@ -128,6 +129,7 @@ function HomePage() {
         
         <Header />
 
+        <main className="relative">
         {/* Enhanced Hero Section */}
         <div className="relative min-h-screen flex flex-col items-center justify-start pt-32 pb-16 overflow-hidden">
           {/* Animated Background */}
@@ -467,6 +469,17 @@ function HomePage() {
             </motion.div>
           </div>
         </div>
+
+        {/* Calendar Booking Section - Right after video */}
+        <motion.section
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+          className="relative bg-gradient-to-b from-white to-gray-50 py-16"
+          id="book-call"
+        >
+          <BookingCalendar />
+        </motion.section>
 
         {/* Enhanced AI Journey Section */}
         <motion.section
@@ -934,6 +947,7 @@ function HomePage() {
           </div>
 
         <Footer />
+      </main>
       </motion.div>
     </>
   );
@@ -1203,572 +1217,644 @@ function Footer() {
 }
 
 function ServicesPage() {
-  // SVG icons for each service
-  const icons = {
-    ai: (
-      <svg className="w-10 h-10 text-blue-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="12" width="16" height="8" rx="4" stroke="currentColor" strokeWidth="2" fill="#e0e7ff"/><circle cx="12" cy="16" r="2" fill="#6366f1"/><circle cx="20" cy="16" r="2" fill="#6366f1"/><rect x="14" y="20" width="4" height="2" fill="#6366f1"/></svg>
-    ),
-    data: (
-      <svg className="w-10 h-10 text-purple-500" fill="none" viewBox="0 0 32 32"><rect x="6" y="10" width="20" height="12" rx="6" stroke="currentColor" strokeWidth="2" fill="#ede9fe"/><rect x="14" y="14" width="4" height="4" fill="#a78bfa"/><rect x="10" y="18" width="12" height="2" fill="#a78bfa"/></svg>
-    ),
-    chat: (
-      <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 32 32"><rect x="6" y="8" width="20" height="14" rx="5" stroke="currentColor" strokeWidth="2" fill="#d1fae5"/><rect x="10" y="14" width="12" height="2" fill="#34d399"/><rect x="10" y="10" width="8" height="2" fill="#34d399"/><polygon points="16,26 12,22 20,22" fill="#34d399"/></svg>
-    ),
-    shield: (
-      <svg className="w-10 h-10 text-yellow-500" fill="none" viewBox="0 0 32 32"><path d="M16 4l12 6v6c0 7.732-5.373 14-12 14S4 23.732 4 16V10l12-6z" stroke="currentColor" strokeWidth="2" fill="#fef3c7"/><path d="M16 18v-4" stroke="#f59e42" strokeWidth="2"/><circle cx="16" cy="20" r="1.5" fill="#f59e42"/></svg>
-    ),
-    cart: (
-      <svg className="w-10 h-10 text-pink-500" fill="none" viewBox="0 0 32 32"><rect x="6" y="10" width="20" height="10" rx="4" stroke="currentColor" strokeWidth="2" fill="#fce7f3"/><circle cx="12" cy="24" r="2" fill="#ec4899"/><circle cx="20" cy="24" r="2" fill="#ec4899"/><rect x="10" y="14" width="12" height="2" fill="#ec4899"/></svg>
-    ),
-    health: (
-      <svg className="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="5" stroke="currentColor" strokeWidth="2" fill="#dbeafe"/><rect x="15" y="13" width="2" height="6" fill="#3b82f6"/><rect x="13" y="15" width="6" height="2" fill="#3b82f6"/></svg>
-    ),
-  };
-  // SVG icons for benefits
-  const benefitIcons = [
-    <svg className="w-8 h-8 text-blue-500" fill="none" viewBox="0 0 32 32"><path d="M8 16h16" stroke="currentColor" strokeWidth="2"/><path d="M16 8v16" stroke="currentColor" strokeWidth="2"/><circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2"/></svg>,
-    <svg className="w-8 h-8 text-yellow-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="14" width="16" height="8" rx="4" stroke="currentColor" strokeWidth="2"/><circle cx="16" cy="18" r="2" fill="currentColor"/></svg>,
-    <svg className="w-8 h-8 text-purple-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="10" width="16" height="12" rx="3" stroke="currentColor" strokeWidth="2"/><path d="M16 10v12" stroke="currentColor" strokeWidth="2"/></svg>,
-    <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2"/><path d="M12 16h8" stroke="currentColor" strokeWidth="2"/><path d="M16 12v8" stroke="currentColor" strokeWidth="2"/></svg>
-  ];
-  // SVG icons for industries
-  const industryIcons = [
-    <svg className="w-8 h-8 text-blue-400" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="5" stroke="currentColor" strokeWidth="2" fill="#dbeafe"/><rect x="15" y="13" width="2" height="6" fill="#3b82f6"/><rect x="13" y="15" width="6" height="2" fill="#3b82f6"/></svg>,
-    <svg className="w-8 h-8 text-gray-700" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="2" fill="#f3f4f6"/><path d="M12 20h8M12 16h8M12 12h8" stroke="#6366f1" strokeWidth="2"/></svg>,
-    <svg className="w-8 h-8 text-pink-400" fill="none" viewBox="0 0 32 32"><rect x="6" y="10" width="20" height="10" rx="4" stroke="currentColor" strokeWidth="2" fill="#fce7f3"/><circle cx="12" cy="24" r="2" fill="#ec4899"/><circle cx="20" cy="24" r="2" fill="#ec4899"/></svg>,
-    <svg className="w-8 h-8 text-yellow-700" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2" fill="#fef9c3"/><rect x="12" y="16" width="8" height="2" fill="#facc15"/></svg>,
-    <svg className="w-8 h-8 text-pink-600" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="2" fill="#fce7f3"/><rect x="14" y="14" width="4" height="4" fill="#ec4899"/></svg>,
-    <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 32 32"><rect x="6" y="10" width="20" height="12" rx="6" stroke="currentColor" strokeWidth="2" fill="#d1fae5"/><rect x="14" y="14" width="4" height="4" fill="#34d399"/></svg>,
-    <svg className="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 32 32"><rect x="8" y="10" width="16" height="12" rx="3" stroke="currentColor" strokeWidth="2" fill="#e0e7ff"/><path d="M16 10v12" stroke="#6366f1" strokeWidth="2"/></svg>,
-    <svg className="w-8 h-8 text-gray-500" fill="none" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2" fill="#f3f4f6"/><path d="M12 20h8" stroke="#6b7280" strokeWidth="2"/></svg>
-  ];
-
-  // Industry images
-  const industryImages = {
-    healthcare: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80",
-    professional: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80",
-    ecommerce: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80",
-    realestate: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80",
-    finance: "https://images.unsplash.com/photo-1551260627-fd1b6daa6224?auto=format&fit=crop&q=80",
-    logistics: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80",
-    education: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80",
-    manufacturing: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80"
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-purple-50 to-purple-100 flex flex-col relative overflow-hidden">
-      {/* Animated Background Image */}
-      <motion.div 
-        className="absolute inset-0 w-full h-full -z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <motion.img
-          src="/src/assets/purple-wave-bg.png"
-          alt="Purple Wave Background"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          initial={{ scale: 1 }}
-          animate={{ 
-            scale: [1, 1.05, 1],
-            rotate: [0, 1, 0]
-          }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity, 
-            ease: "easeInOut"
-          }}
-        />
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white/80" />
-      </motion.div>
-
-      {/* Floating particles */}
-      {Array.from({ length: 20 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-purple-500/20 rounded-full blur-sm"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            y: [0, Math.random() * 100 - 50],
-            x: [0, Math.random() * 100 - 50],
-            opacity: [0.2, 0.5, 0.2]
-          }}
-          transition={{
-            duration: 10 + Math.random() * 10,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-
       <GradientBackground />
       <Header />
       <main className="flex-1 w-full relative z-10">
-        {/* --- NEW HERO/INTRO SECTION WITH VIDEO --- */}
-        <section className="relative py-28 flex flex-col items-center justify-center text-center overflow-hidden min-h-[520px] md:min-h-[680px]">
-          {/* Animated light background */}
-          <div className="absolute inset-0 -z-10">
-            {/* Animated purple wave image background */}
-            <motion.img
-              src="/src/assets/purple-wave-bg.png"
-              alt="Purple Wave Background"
-              className="absolute inset-0 w-full h-full object-cover object-center"
-              initial={{ scale: 1, opacity: 0.85 }}
-              animate={{ scale: [1, 1.05, 1], opacity: [0.85, 1, 0.85] }}
-              transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ zIndex: 0 }}
-            />
-            {/* Animated floating tech elements */}
-            {Array.from({ length: 24 }).map((_, i) => (
-            <motion.div
-                key={i}
-                className="absolute w-3 h-3 bg-primary/10 rounded-full blur-md"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                    animate={{
-                  x: [0, Math.random() * 40 - 20],
-                  y: [0, Math.random() * 40 - 20],
-                  opacity: [0.7, 1, 0.7],
-                    }}
-                    transition={{
-                  duration: 10 + Math.random() * 10,
-                      repeat: Infinity,
-                  repeatType: 'reverse',
-                  ease: 'easeInOut',
-                }}
-              />
-            ))}
-            {/* Tech-savvy animated SVG network background */}
-            <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] opacity-30" viewBox="0 0 900 500" fill="none">
-              {/* Animated network lines */}
-              <motion.line x1="100" y1="100" x2="800" y2="100" stroke="#a78bfa" strokeWidth="2" initial={{ opacity: 0.3 }} animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }} />
-              <motion.line x1="200" y1="200" x2="700" y2="400" stroke="#6366f1" strokeWidth="2" initial={{ opacity: 0.2 }} animate={{ opacity: [0.2, 0.6, 0.2] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }} />
-              <motion.line x1="400" y1="50" x2="400" y2="450" stroke="#38bdf8" strokeWidth="2" initial={{ opacity: 0.2 }} animate={{ opacity: [0.2, 0.5, 0.2] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }} />
-              {/* Animated network nodes */}
-              <motion.circle cx="100" cy="100" r="10" fill="#a78bfa" animate={{ r: [10, 14, 10] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} />
-              <motion.circle cx="800" cy="100" r="8" fill="#6366f1" animate={{ r: [8, 12, 8] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }} />
-              <motion.circle cx="200" cy="200" r="7" fill="#38bdf8" animate={{ r: [7, 11, 7] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 }} />
-              <motion.circle cx="700" cy="400" r="9" fill="#a78bfa" animate={{ r: [9, 13, 9] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 3 }} />
-              <motion.circle cx="400" cy="50" r="6" fill="#6366f1" animate={{ r: [6, 10, 6] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }} />
-              <motion.circle cx="400" cy="450" r="8" fill="#38bdf8" animate={{ r: [8, 12, 8] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }} />
-            </svg>
-            {/* Optional: faint mesh SVG for extra depth */}
-            <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] opacity-10" viewBox="0 0 900 500" fill="none">
-              <ellipse cx="450" cy="250" rx="400" ry="180" fill="url(#meshGradient)" />
-              <defs>
-                <radialGradient id="meshGradient" cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5" gradientTransform="matrix(1 0 0 0.5 0 0.25)">
-                  <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity="0.1" />
-                </radialGradient>
-              </defs>
-            </svg>
-          </div>
-          {/* Headline and subheadline with animated highlight */}
+        {/* Hero Section */}
+        <section className="relative py-20 px-4">
+          <div className="max-w-7xl mx-auto text-center">
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-5xl md:text-6xl font-extrabold text-black mb-4 relative inline-block"
-            style={{ textShadow: 'none' }}
+              transition={{ duration: 0.6 }}
+              className="text-5xl md:text-6xl font-bold mb-6"
           >
-            <span className="relative z-10 text-black">Agentic AI Services</span>
+              <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
+                Services Designed to Accelerate AI Adoption
+              </span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-xl md:text-2xl font-semibold text-black max-w-2xl mx-auto mb-10 relative"
-            style={{ textShadow: 'none' }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl text-gray-600 max-w-3xl mx-auto"
           >
-            <span className="relative z-10">Build your AI workforce. Automate, optimize, and scale with intelligent agents for every business function.</span>
+              Empowering professionals, businesses, and startups through cutting-edge AI education, 
+              hands-on automation solutions, and niche software development.
           </motion.p>
-          {/* Glassy CTA Button */}
-          <motion.a
-            href="#book-call"
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center px-10 py-5 text-2xl font-bold text-white bg-gradient-to-r from-primary to-blue-500 rounded-xl shadow-xl hover:from-blue-500 hover:to-primary transition-colors duration-300 group z-10 backdrop-blur-2xl border-2 border-white/30"
-            style={{ boxShadow: 'none' }}
-          >
-            <span>Request Demo</span>
-            <motion.svg
-              className="w-6 h-6 ml-3 transform group-hover:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </motion.svg>
-          </motion.a>
-          {/* Subtle video overlay or SVG illustration */}
-          <div className="relative w-full max-w-4xl mx-auto mt-12 flex items-center justify-center min-h-[420px]">
-            {/* Animated mesh/glow background for depth */}
+          </div>
+        </section>
+
+        {/* Three Core Service Streams */}
+        <section className="max-w-7xl mx-auto px-4 py-16">
             <motion.div
-              className="absolute inset-0 z-0 flex items-center justify-center"
-              initial={{ opacity: 0.7, scale: 1 }}
-              animate={{ opacity: [0.7, 1, 0.7], scale: [1, 1.04, 1] }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
             >
-              <svg width="600" height="340" viewBox="0 0 600 340" fill="none" className="w-full h-full">
-                <ellipse cx="300" cy="170" rx="270" ry="120" fill="url(#meshGradient2)" />
-                <defs>
-                  <radialGradient id="meshGradient2" cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5">
-                    <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.18" />
-                    <stop offset="100%" stopColor="#6366f1" stopOpacity="0.08" />
-                  </radialGradient>
-                </defs>
-              </svg>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                Three Core Service Streams
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Accelerating AI adoption through accessible training, applied tools, and expert guidance
+            </p>
             </motion.div>
-            {/* Floating tech icons */}
-            <div className="absolute inset-0 z-10 pointer-events-none">
-              <FloatingIcons />
-        </div>
-            {/* Glassy card with animated gradient border */}
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Stream 1: Training & Consulting */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
-              className="relative z-20 max-w-2xl w-full mx-auto px-8 py-10 rounded-3xl bg-white/70 backdrop-blur-2xl shadow-2xl border border-white/40 flex flex-col items-center"
-              style={{ boxShadow: '0 8px 40px 0 rgba(99,102,241,0.10)' }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="group relative"
             >
-              {/* Animated gradient border */}
-              <motion.div
-                className="absolute -inset-1 rounded-3xl pointer-events-none z-0"
-                style={{ background: 'linear-gradient(120deg, #a78bfa88, #6366f188, #38bdf888)' }}
-                animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.03, 1] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              {/* Large animated SVG icon */}
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-                className="mb-4 z-10"
-              >
-                <svg className="w-20 h-20 text-primary drop-shadow-xl" fill="none" viewBox="0 0 64 64">
-                  <circle cx="32" cy="32" r="30" stroke="#a78bfa" strokeWidth="3" fill="#f3f0fa" />
-                  <ellipse cx="32" cy="32" rx="16" ry="16" fill="#6366f1" />
-                  <circle cx="32" cy="32" r="6" fill="#fff" />
-                  <circle cx="32" cy="32" r="3" fill="#a78bfa" />
-                  <motion.circle cx="32" cy="32" r="24" stroke="#38bdf8" strokeWidth="2" fill="none" animate={{ r: [22, 24, 22] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
+                    <span className="text-4xl">🎓</span>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Training & Consulting</h3>
+                <p className="text-gray-600 mb-6 text-center">
+                  Empowering individuals and teams through knowledge transfer and upskilling
+                </p>
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-800">Offerings:</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-              </motion.div>
-              {/* Animated heading */}
-              <motion.h3
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="text-3xl font-extrabold text-primary mb-3 tracking-tight z-10 drop-shadow-lg"
-              >
-                What is Agentic AI?
-              </motion.h3>
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-                className="text-gray-700 text-lg font-medium text-center mb-4 z-10"
-              >
-                Agentic AI refers to intelligent, autonomous software agents that can independently perceive, decide, and act to accomplish business goals. These agents automate complex workflows, adapt to changing needs, and collaborate seamlessly with your team—freeing you to focus on innovation and growth, not repetitive tasks.
-              </motion.p>
-              {/* Animated bullet points */}
-              <ul className="text-gray-700 text-base mt-2 space-y-3 text-left w-full max-w-md mx-auto z-10">
-                {[
-                  'Understands and automates multi-step business processes',
-                  'Continuously learns and optimizes from data and feedback',
-                  'Integrates with your existing tools and systems',
-                  'Operates 24/7 with enterprise-grade security',
-                ].map((point, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.7 }}
-                    transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-                    className="flex items-start gap-3"
-                  >
-                    <span className="mt-1">
-                      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#a78bfa" opacity="0.18"/><path d="M7 13l3 3 7-7" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </span>
-                    <span className="font-semibold text-gray-800">{point}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
+                      <span className="text-gray-700 text-sm">AI Bootcamps & Intensive Workshops (online + in-person)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Custom Corporate Training</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Long-term Retainer-Based Consulting for AI Strategy</span>
+                    </li>
+                  </ul>
+                  <h4 className="font-semibold text-gray-800 mt-4">Target Audience:</h4>
+                  <p className="text-gray-600 text-sm">
+                    Corporate teams, SMEs, solopreneurs, and individuals seeking to leverage AI in their workflows
+                  </p>
+                </div>
               </div>
-        </section>
-        {/* --- SERVICES GRID --- */}
-        <section className="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 lg:grid-cols-3 gap-10 relative">
-          {/* ...existing service cards, but add staggered animation and more hover effects... */}
-          {/* ...existing code for mapping services... */}
-        </section>
-        {/* --- HOW IT WORKS / PROCESS SECTION --- */}
-        <section className="max-w-5xl mx-auto px-4 py-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-primary mb-10 text-center tracking-tight">How It Works</h2>
-          <div className="relative flex flex-col md:flex-row items-center justify-center gap-8">
-            {/* Animated connector line for desktop */}
-            <div className="hidden md:block absolute left-0 right-0 top-1/2 h-1 z-0">
-              <div className="w-full h-full bg-gradient-to-r from-primary/30 via-blue-400/30 to-purple-400/30 rounded-full animate-pulse" />
+              </motion.div>
+
+            {/* Stream 2: AI Automation Services */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="group relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600">
+                    <span className="text-4xl">🤖</span>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">AI Automation Services</h3>
+                <p className="text-gray-600 mb-6 text-center">
+                  End-to-end AI agent systems and process automation to solve real business challenges
+                </p>
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-800">Key Deliverables:</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Custom AI Agent Development (Sales, HR, Admin, Customer Support)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Automation Pipelines</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Integration into existing tools (CRMs, ERPs, etc.)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">Training AI Agents on internal data</span>
+                    </li>
+              </ul>
+                  <h4 className="font-semibold text-gray-800 mt-4">Value:</h4>
+                  <p className="text-gray-600 text-sm">
+                    Save time, reduce operational costs, and increase productivity for clients using intelligent agents
+                  </p>
+              </div>
             </div>
-            {[
-              { icon: icons.ai, title: '1. Discovery', desc: 'We analyze your workflows and identify automation opportunities.' },
-              { icon: icons.data, title: '2. Agent Design', desc: 'We design and configure AI agents tailored to your needs.' },
-              { icon: icons.chat, title: '3. Launch & Optimize', desc: 'Deploy, monitor, and continuously improve your AI workforce.' },
-            ].map((step, i) => (
+            </motion.div>
+
+            {/* Stream 3: Niche AI Software Solutions */}
               <motion.div
-                key={i}
-                className="relative bg-white/70 backdrop-blur-xl rounded-2xl p-8 border-2 border-primary/10 shadow-xl flex flex-col items-center text-center min-w-[220px] max-w-xs z-10"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.2, duration: 0.6, type: 'spring' }}
-                whileHover={{ scale: 1.07, boxShadow: '0 0 40px 10px #a78bfa33' }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="group relative"
               >
-                <div className="flex items-center justify-center mb-4 z-10 relative">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-br from-white/80 to-primary/10 shadow-lg border border-primary/10 animate-pulse-slow">
-                    {step.icon}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-green-500 to-teal-600">
+                    <span className="text-4xl">💡</span>
           </div>
                 </div>
-                <h3 className="text-lg font-bold text-primary mb-2 z-10 relative">{step.title}</h3>
-                <p className="text-gray-600 text-base z-10 relative">{step.desc}</p>
-      </motion.div>
-            ))}
-          </div>
-      </section>
-        {/* --- WHY CHOOSE AGENTIC AI (TECH-SAVVY GLASSY CARDS) --- */}
-        <section className="relative py-20 bg-gradient-to-b from-white via-purple-50 to-purple-100 overflow-hidden">
-          {/* Floating tech particles */}
-          {Array.from({ length: 14 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-primary/20 rounded-full blur"
-              style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          ))}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-12 text-center tracking-tight relative">
-            Why Choose Agentic AI?
-          </h2>
-          <div className="flex gap-8 overflow-x-auto pb-4 snap-x px-4 md:px-12">
-            {[
-              {
-                icon: benefitIcons[0],
-                title: 'Faster Operations',
-                desc: 'AI agents work 24/7, reducing delays and boosting productivity.',
-                color: 'from-white/80 via-blue-100/60 to-blue-200/80 border-blue-200'
-              },
-              {
-                icon: benefitIcons[1],
-                title: 'Reliable & Secure',
-                desc: 'Enterprise-grade security and compliance for all workflows.',
-                color: 'from-white/80 via-purple-100/60 to-purple-200/80 border-purple-200'
-              },
-              {
-                icon: benefitIcons[2],
-                title: 'Continuous Learning',
-                desc: 'Agents adapt and improve with every task, optimizing results.',
-                color: 'from-white/80 via-indigo-100/60 to-blue-200/80 border-indigo-200'
-              },
-              {
-                icon: benefitIcons[3],
-                title: 'Seamless Integration',
-                desc: 'Connect with your existing tools and systems effortlessly.',
-                color: 'from-white/80 via-green-100/60 to-teal-200/80 border-green-200'
-              }
-            ].map((benefit, i) => (
-              <motion.div
-                key={i}
-                className={`relative group bg-gradient-to-br ${benefit.color} backdrop-blur-2xl rounded-2xl p-8 border-2 shadow-xl flex flex-col items-center text-center min-w-[260px] max-w-xs snap-center overflow-hidden`}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.1, duration: 0.6, type: 'spring' }}
-                whileHover={{
-                  boxShadow: '0 0 100px 32px #a78bfa33',
-                  scale: 1.08
-                }}
-              >
-                {/* Animated glowing border */}
-                <motion.div
-                  className={`absolute -inset-2 rounded-2xl pointer-events-none z-0 blur-xl opacity-60 bg-gradient-to-br ${benefit.color}`}
-                  animate={{
-                    opacity: [0.5, 0.8, 0.5],
-                    scale: [1, 1.05, 1]
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: 'easeInOut'
-                  }}
-                />
-                <div className="flex items-center justify-center mb-4 z-10 relative">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center bg-white/90 shadow-lg border-2 border-white">
-                    {benefit.icon}
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Niche AI Software Solutions</h3>
+                <p className="text-gray-600 mb-6 text-center">
+                  Specialized software using AI for industry-specific needs
+                </p>
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-gray-800">Product Lines:</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">
+                        <strong>Healthcare AI:</strong> Intelligent diagnostic and patient engagement tools
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">
+                        <strong>Strique Marketing Suite:</strong> AI content, ad copywriting, campaign analysis
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-700 text-sm">
+                        <strong>Hospitality AI Suite:</strong> Personalized guest engagement, service bots
+                      </span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 z-10 relative tracking-wide drop-shadow-lg">{benefit.title}</h3>
-                <p className="text-gray-700 text-base z-10 relative font-medium drop-shadow">{benefit.desc}</p>
-              </motion.div>
-            ))}
-            </div>
-      </section>
-        {/* --- INDUSTRIES WE SERVE (HORIZONTAL SCROLLABLE CARDS) --- */}
-        <section className="relative max-w-7xl mx-auto px-4 py-16 overflow-hidden">
-          {/* Background image with overlay */}
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50 to-purple-100" />
+      </motion.div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-black mb-12 text-center tracking-tight relative z-10">
-            Industries We Serve
-          </h2>
-          <div className="flex gap-8 overflow-x-auto pb-4 snap-x relative z-10">
-            {[
-              { 
-                icon: industryIcons[0], 
-                name: 'Healthcare', 
-                desc: 'Patient onboarding, lab data, compliance.', 
-                color: 'from-white/80 via-blue-100/60 to-blue-200/80 border-blue-200',
-                image: industryImages.healthcare
-              },
-              { 
-                icon: industryIcons[1], 
-                name: 'Professional Services', 
-                desc: 'Workflow automation, onboarding, reporting.', 
-                color: 'from-white/80 via-purple-100/60 to-purple-200/80 border-purple-200',
-                image: industryImages.professional
-              },
-              { 
-                icon: industryIcons[2], 
-                name: 'E-commerce', 
-                desc: 'Order automation, chatbots, marketing.', 
-                color: 'from-white/80 via-pink-100/60 to-pink-200/80 border-pink-200',
-                image: industryImages.ecommerce
-              },
-              { 
-                icon: industryIcons[3], 
-                name: 'Real Estate', 
-                desc: 'Lead management, document automation.', 
-                color: 'from-white/80 via-yellow-100/60 to-yellow-200/80 border-yellow-200',
-                image: industryImages.realestate
-              },
-              { 
-                icon: industryIcons[4], 
-                name: 'Finance', 
-                desc: 'KYC, fraud detection, reporting.', 
-                color: 'from-white/80 via-green-100/60 to-green-200/80 border-green-200',
-                image: industryImages.finance
-              },
-              { 
-                icon: industryIcons[5], 
-                name: 'Logistics', 
-                desc: 'Route optimization, tracking, inventory.', 
-                color: 'from-white/80 via-indigo-100/60 to-indigo-200/80 border-indigo-200',
-                image: industryImages.logistics
-              },
-              { 
-                icon: industryIcons[6], 
-                name: 'Education', 
-                desc: 'Admissions, grading, engagement.', 
-                color: 'from-white/80 via-purple-100/60 to-indigo-200/80 border-purple-200',
-                image: industryImages.education
-              },
-              { 
-                icon: industryIcons[7], 
-                name: 'Manufacturing', 
-                desc: 'Supply chain, quality control.', 
-                color: 'from-white/80 via-gray-100/60 to-gray-200/80 border-gray-200',
-                image: industryImages.manufacturing
-              },
-          ].map((industry, i) => (
-              <motion.div
-                key={i}
-                className={`relative group bg-gradient-to-br ${industry.color} backdrop-blur-xl rounded-2xl p-6 border-2 shadow-xl flex flex-col items-center text-center overflow-hidden min-w-[280px] max-w-xs snap-center`}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: i * 0.08, duration: 0.5, type: 'spring' }}
-                whileHover={{
-                  boxShadow: '0 0 80px 24px #a78bfa22',
-                  scale: 1.06
-                }}
-              >
-                {/* Background Image */}
-                <div className="absolute inset-0 w-full h-full">
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-white/90 to-white/95 backdrop-blur-sm" />
-                  <img
-                    src={industry.image}
-                    alt={industry.name}
-                    className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-300"
-                  />
-            </div>
+      </section>
 
-                <div className="relative z-10">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center bg-white/90 shadow-lg border-2 border-white">
-                      {industry.icon}
+        {/* Why Choose AI Section */}
+        <section className="relative py-14 bg-gradient-to-br from-white via-gray-50 to-blue-50">
+          <div className="max-w-7xl mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-3">
+                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  Why Choose AI for Your Business?
+                </span>
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover how AI transforms operations, reduces costs, and accelerates growth
+              </p>
+            </motion.div>
+
+            {/* Carousel/Horizontal Scroll on mobile, grid on desktop */}
+            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-purple-100 scrollbar-track-transparent md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
+              {[
+                {
+                  icon: '⚡',
+                  title: 'Lightning-Fast Processing',
+                  description: 'AI processes data 1000x faster than manual methods, delivering instant insights and decisions',
+                  benefit: '99% faster processing',
+                  gradient: 'from-yellow-100 via-orange-100 to-orange-200'
+                },
+                {
+                  icon: '🎯',
+                  title: 'Unmatched Accuracy',
+                  description: 'Eliminate human errors with AI precision, achieving up to 99.9% accuracy in data processing',
+                  benefit: '99.9% accuracy rate',
+                  gradient: 'from-green-100 via-emerald-100 to-emerald-200'
+                },
+                {
+                  icon: '📈',
+                  title: 'Scalable Growth',
+                  description: 'Scale operations infinitely without proportional cost increases or quality compromises',
+                  benefit: 'Unlimited scalability',
+                  gradient: 'from-blue-100 via-indigo-100 to-indigo-200'
+                },
+                {
+                  icon: '💰',
+                  title: 'Cost Reduction',
+                  description: 'Cut operational costs by 60-80% through intelligent automation and resource optimization',
+                  benefit: '80% cost savings',
+                  gradient: 'from-purple-100 via-pink-100 to-pink-200'
+                },
+                {
+                  icon: '🔒',
+                  title: 'Enhanced Security',
+                  description: 'AI-powered security systems detect and prevent threats 24/7 with advanced pattern recognition',
+                  benefit: '24/7 protection',
+                  gradient: 'from-red-100 via-rose-100 to-rose-200'
+                },
+                {
+                  icon: '🚀',
+                  title: 'Competitive Edge',
+                  description: 'Stay ahead of competitors with cutting-edge AI capabilities and continuous innovation',
+                  benefit: '10x faster innovation',
+                  gradient: 'from-teal-100 via-cyan-100 to-cyan-200'
+                }
+              ].map((reason, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08, duration: 0.4 }}
+                  className="snap-center min-w-[240px] max-w-xs md:min-w-0 md:max-w-none rounded-2xl shadow-md flex flex-col items-center justify-center relative group transition-transform duration-300 overflow-hidden bg-white/70 backdrop-blur border border-gray-100"
+                  style={{ height: '260px' }}
+                >
+                  {/* Subtle Gradient Border */}
+                  <motion.div
+                    className={`absolute -inset-1 rounded-2xl z-0 bg-gradient-to-br ${reason.gradient} blur opacity-30 group-hover:opacity-40 transition-opacity duration-300`}
+                    animate={{ opacity: [0.2, 0.3, 0.2], scale: [1, 1.01, 1] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                  />
+                  {/* Glass overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/60 to-white/80 z-10" />
+                  {/* Content */}
+                  <div className="relative z-20 flex flex-col items-center justify-center p-3 h-full text-center">
+                    <div className="text-2xl mb-1 drop-shadow-sm">{reason.icon}</div>
+                    <h3 className="text-base font-semibold text-gray-900 mb-1 tracking-wide drop-shadow-sm">{reason.title}</h3>
+                    <p className="text-gray-700 text-xs font-medium drop-shadow max-w-xs mb-1">{reason.description}</p>
+                    <div className="text-primary text-xs font-bold mt-2">{reason.benefit}</div>
+                  </div>
+                  {/* Glass border effect */}
+                  <div className="absolute inset-0 rounded-2xl border border-gray-100 pointer-events-none z-30" style={{ boxShadow: '0 2px 8px 0 rgba(31,38,135,0.06)' }} />
+                </motion.div>
+              ))}
+            </div>
+            {/* CTA below cards */}
+            <div className="text-center mt-10">
+              <span className="text-gray-500 text-sm">Join thousands of businesses already transforming with AI</span>
+              <br />
+              <a
+                href="#book-call"
+                className="inline-flex items-center mt-4 px-7 py-3 text-base font-semibold text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors duration-300 group shadow-md"
+              >
+                <span>Start Your AI Journey</span>
+                <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Success Metrics */}
+        <section className="relative py-20">
+          <div className="max-w-7xl mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Success By The Numbers
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Real results delivered to real businesses
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { number: '500+', label: 'Professionals Trained', icon: '👥' },
+                { number: '150+', label: 'AI Agents Deployed', icon: '🤖' },
+                { number: '60%', label: 'Average Time Saved', icon: '⏱️' },
+                { number: '3.5x', label: 'ROI Improvement', icon: '📈' }
+              ].map((metric, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="text-center"
+                >
+                  <div className="text-6xl mb-4">{metric.icon}</div>
+                  <motion.h3 
+                    className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 + 0.2, duration: 0.5 }}
+                  >
+                    {metric.number}
+                  </motion.h3>
+                  <p className="text-gray-600 text-lg">{metric.label}</p>
+                </motion.div>
+              ))}
             </div>
         </div>
-                  <span className="text-lg font-bold text-gray-900 mb-1 block drop-shadow-lg">{industry.name}</span>
-                  <span className="text-gray-700 text-sm block font-medium drop-shadow">{industry.desc}</span>
-                </div>
+        </section>
 
-                {/* Hover overlay */}
+        {/* Technology Stack */}
+        <section className="relative py-20 bg-gradient-to-br from-purple-50 to-blue-50">
+          <div className="max-w-7xl mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Our Technology Stack
+                </span>
+          </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Enterprise-grade tools and frameworks powering our AI solutions
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  category: 'AI & Machine Learning',
+                  tools: ['OpenAI GPT-4', 'Anthropic Claude', 'Google Gemini', 'Custom LLMs', 'Langchain', 'Vector Databases'],
+                  icon: '🧠',
+                  color: 'from-purple-500 to-pink-600'
+                },
+                {
+                  category: 'Automation & Integration',
+                  tools: ['Zapier', 'Make.com', 'n8n', 'API Integrations', 'Webhook Systems', 'Custom Pipelines'],
+                  icon: '⚡',
+                  color: 'from-blue-500 to-cyan-600'
+                },
+                {
+                  category: 'Development & Deployment',
+                  tools: ['Python', 'Node.js', 'React', 'Cloud Platforms', 'Docker', 'Kubernetes'],
+                  icon: '🚀',
+                  color: 'from-green-500 to-teal-600'
+                }
+              ].map((stack, index) => (
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                />
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2, duration: 0.5 }}
+                  className="relative group"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${stack.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`} />
+                  <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                    <div className="text-5xl mb-4">{stack.icon}</div>
+                    <h3 className={`text-2xl font-bold mb-4 bg-gradient-to-r ${stack.color} bg-clip-text text-transparent`}>
+                      {stack.category}
+                    </h3>
+                    <ul className="space-y-2">
+                      {stack.tools.map((tool, i) => (
+                        <li key={i} className="flex items-start">
+                          <svg className="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-gray-700">{tool}</span>
+                        </li>
+                      ))}
+                    </ul>
+                </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* What is Agentic AI? Section */}
+        <section className="relative py-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+          <div className="max-w-4xl mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-10"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  What is Agentic AI?
+                </span>
+              </h2>
+              <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6">
+                Agentic AI refers to intelligent, autonomous software agents that can independently perceive, decide, and act to accomplish business goals. These agents automate complex workflows, adapt to changing needs, and collaborate seamlessly with your team—freeing you to focus on innovation and growth, not repetitive tasks.
+              </p>
+            </motion.div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                {
+                  icon: '🤖',
+                  title: 'Understands and automates multi-step business processes',
+                },
+                {
+                  icon: '📈',
+                  title: 'Continuously learns and optimizes from data and feedback',
+                },
+                {
+                  icon: '🔗',
+                  title: 'Integrates with your existing tools and systems',
+                },
+                {
+                  icon: '🛡️',
+                  title: 'Operates 24/7 with enterprise-grade security',
+                },
+              ].map((feature, idx) => (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="flex items-start gap-4 bg-white/80 rounded-2xl p-6 shadow-lg border border-blue-100 hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="text-3xl md:text-4xl text-blue-600 shrink-0">{feature.icon}</div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{feature.title}</h3>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Process Section */}
+        <section className="relative py-20">
+          <div className="max-w-7xl mx-auto px-4">
+                <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Our Process
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                A proven methodology to deliver exceptional AI solutions
+              </p>
+            </motion.div>
+
+            <div className="relative">
+              {/* Connection Line */}
+              <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 to-blue-300 hidden lg:block" />
+              
+              <div className="grid lg:grid-cols-5 gap-8 relative">
+                {[
+                  { step: '01', title: 'Discovery', desc: 'Understand your challenges and goals', icon: '🔍' },
+                  { step: '02', title: 'Strategy', desc: 'Design custom AI solutions', icon: '📋' },
+                  { step: '03', title: 'Development', desc: 'Build and train AI agents', icon: '🛠️' },
+                  { step: '04', title: 'Testing', desc: 'Ensure quality and accuracy', icon: '✅' },
+                  { step: '05', title: 'Deployment', desc: 'Launch and monitor performance', icon: '🚀' }
+                ].map((process, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    className="relative"
+                  >
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center relative z-10">
+                      <div className="text-4xl mb-4">{process.icon}</div>
+                      <div className="text-3xl font-bold text-purple-600 mb-2">{process.step}</div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{process.title}</h3>
+                      <p className="text-gray-600 text-sm">{process.desc}</p>
+                    </div>
+              </motion.div>
+            ))}
+              </div>
+            </div>
+            </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="relative py-20 bg-gradient-to-br from-gray-50 to-white">
+          <div className="max-w-4xl mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Frequently Asked Questions
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600">
+                Get answers to common questions about our services
+              </p>
+            </motion.div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  question: 'What is AI automation and how can it help my business?',
+                  answer: 'AI automation uses intelligent software agents to handle repetitive tasks, analyze data, and make decisions. It can save your team 60+ hours monthly by automating workflows like customer service, data entry, report generation, and more.'
+                },
+                {
+                  question: 'How long does it take to implement AI solutions?',
+                  answer: 'Implementation timelines vary based on complexity. Simple automation can be deployed in 2-4 weeks, while comprehensive AI agent systems typically take 6-12 weeks. We provide detailed timelines during the discovery phase.'
+                },
+                {
+                  question: 'Do I need technical expertise to use your AI solutions?',
+                  answer: 'No technical expertise required! Our solutions are designed to be user-friendly. We provide comprehensive training and ongoing support to ensure your team can effectively use the AI tools.'
+                },
+                {
+                  question: 'Is my data secure with AI automation?',
+                  answer: 'Absolutely. We implement enterprise-grade security measures, including encryption, access controls, and compliance with data protection regulations. Your data never leaves your control.'
+                },
+                {
+                  question: 'What ROI can I expect from AI automation?',
+                  answer: 'Most clients see 3-5x ROI within the first year through time savings, error reduction, and increased productivity. We provide detailed ROI calculations during the consultation phase.'
+                }
+              ].map((faq, index) => (
+              <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                >
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                    <span className="text-purple-600 mr-3">Q:</span>
+                    {faq.question}
+                  </h3>
+                  <p className="text-gray-600 ml-8">
+                    <span className="text-blue-600 font-semibold">A:</span> {faq.answer}
+                  </p>
               </motion.div>
             ))}
             </div>
+            </div>
         </section>
-        {/* --- MODERN CTA --- */}
-        <section className="w-full py-16 flex justify-center items-center bg-gradient-to-r from-primary/10 via-primary/10 to-blue-600/10 mt-8 border-t border-primary/10">
-          <div className="bg-white/70 backdrop-blur-2xl rounded-2xl shadow-2xl px-10 py-8 flex flex-col items-center max-w-xl relative overflow-hidden">
-            {/* Animated background gradient */}
+
+        {/* Call to Action */}
+        <section className="relative py-20 px-4">
+          <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              className="absolute -inset-2 rounded-2xl bg-gradient-to-br from-primary/20 via-blue-400/20 to-purple-400/20 blur-2xl opacity-60 -z-10"
-              animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.05, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            />
-            {/* Floating tech elements */}
-            {Array.from({ length: 8 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-primary/20 rounded-full blur"
-                style={{ left: `${10 + i * 10}%`, top: `${10 + (i % 4) * 20}%` }}
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            ))}
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4 text-center z-10">Ready to Build Your AI Workforce?</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8 text-center z-10">Request a demo or book a strategy call to see agentic AI in action for your business.</p>
-            <motion.a
-              href="#book-call"
-              whileHover={{ scale: 1.07, boxShadow: '0 0 24px 6px #a78bfa55' }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center px-10 py-5 text-2xl font-bold text-white bg-gradient-to-r from-primary to-blue-500 rounded-xl shadow-xl hover:from-blue-500 hover:to-primary transition-colors duration-300 group z-10"
-              style={{ boxShadow: '0 0 16px 2px #a78bfa33' }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-gray-200"
             >
-              <span>Request Demo</span>
-              <motion.svg
-                className="w-6 h-6 ml-3 transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                  Ready to Transform Your Business with AI?
+                </span>
+              </h2>
+              <p className="text-xl text-gray-600 mb-8">
+                Whether you need training, automation, or custom AI solutions, we're here to help you succeed
+              </p>
+            <motion.a
+                href="/#book-call"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl shadow-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+            >
+                <span>Get Started Today</span>
+                <svg className="w-6 h-6 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </motion.svg>
+                </svg>
             </motion.a>
+            </motion.div>
         </div>
       </section>
       </main>
